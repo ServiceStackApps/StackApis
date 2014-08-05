@@ -68,9 +68,9 @@ namespace QAutoQuery
                 //Throttle queries
                 Thread.Sleep(500);
                 var response =
-                client.Get(
-                    "https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}".Fmt(i,pageSize,"stackoverflow"));
-
+                    client.Get(
+                        "https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
+                            .Fmt(i, pageSize, "stackoverflow"));
                 //There is an extension method I'm forgetting...
                 var responseBytes = response.GetResponseStream().ReadFully();
                 var responseString = UTF8Encoding.UTF8.GetString(responseBytes);
