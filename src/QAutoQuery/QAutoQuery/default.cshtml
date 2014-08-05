@@ -5,8 +5,8 @@
 <script>
     var app = angular.module('soApp', []);
 
-    app.controller('soCtrl', ['$scope', '$http',
-        function ($scope, $http) {
+    app.controller('soCtrl', ['$scope', '$http','$timeout',
+        function ($scope, $http, $timeout) {
             $scope.makeRequest = function(path) {
                 $http.get(path)
                     .success(function(response) {
@@ -14,7 +14,21 @@
                     });
             };
 
-            $scope.filterResult = function () {
+            $scope.titleSearchTimeout = null;
+            $scope.$watch('titleSearch', function() {
+                if ($scope.titleSearch) {
+                    if ($scope.titleSearchTimeout != null) {
+                        $timeout.cancel($scope.titleSearchTimeout);
+                        $scope.titleSearchTimeout = null;
+                    }
+                    $scope.titleSearchTimeout = $timeout(function () {
+                        $scope.makeRequest(constructUrl() + "&titleContains=" + $scope.titleSearch);
+                    }, 200);
+                }
+            });
+
+
+            function constructUrl() {
                 var scoreVal = $('#scoreInput').val() || 0;
                 var viewsVal = $('#viewsInput').val() || 0;
                 var answersVal = $('#answerInput').val() || 0;
@@ -28,7 +42,11 @@
                     '&view_count' + viewsOperator + '=' + viewsVal +
                     '&answer_count' + answersOperator + '=' + answersVal +
                     '&orderByDesc=' + orderByDescVal;
-                $scope.makeRequest(path);
+                return path;
+            }
+
+            $scope.filterResult = function () {
+                $scope.makeRequest(constructUrl());
             };
 
             $scope.makeRequest('/questions');
@@ -38,7 +56,9 @@
 </script>
 <div ng-app="soApp">
     <div ng-controller="soCtrl">
+        <input type="text" name="titleSearch" ng-model="titleSearch" class="input-lg" placeholder="Title search" style="width:100%" />
         <div class="col-sm-6 col-md-3 col-lg-3">
+            
             <form style="margin-top:32px">
                 <div>
                     <div class="form-group">
@@ -66,7 +86,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input id="answerInput" class=" form-control" type="text" placeholder="Views" />
+                        <input id="answerInput" class=" form-control" type="text" placeholder="Number of answers" />
                     </div>
                     <div class="form-group">
                         <label>
@@ -102,6 +122,6 @@
                     </tr>
                 </tbody>
             </table>
-            </div>
         </div>
+    </div>
 </div>

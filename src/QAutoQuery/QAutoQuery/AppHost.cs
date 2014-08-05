@@ -44,8 +44,8 @@ namespace QAutoQuery
             Plugins.Add(new AutoQueryFeature { MaxLimit = 100});
 
             container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("~/App_Data/db.sqlite".MapHostAbsolutePath(), SqliteDialect.Provider));
-            InitDatabaseSchema(container.Resolve<IDbConnectionFactory>());
-            SeedStackOverflowData(container.Resolve<IDbConnectionFactory>());
+            //InitDatabaseSchema(container.Resolve<IDbConnectionFactory>());
+            //SeedStackOverflowData(container.Resolve<IDbConnectionFactory>());
 
         }
 
