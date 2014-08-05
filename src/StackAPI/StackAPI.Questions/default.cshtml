@@ -1,0 +1,130 @@
+﻿@using StackAPI.Questions.ServiceModel
+@inherits ViewPage
+@{
+    ViewBag.Title = "ServiceStack StackOverflow questions";
+}
+<script>
+    var app = angular.module('soApp', []);
+
+    app.controller('soCtrl', ['$scope', '$http','$timeout',
+        function ($scope, $http, $timeout) {
+            $scope.makeRequest = function(path) {
+                $http.get(path)
+                    .success(function(response) {
+                        $scope.questionsResult = response.Results;
+                    });
+            };
+
+            $('input,select').change(function() {
+                $scope.makeRequest(constructUrl());
+            });
+
+            $scope.titleSearchTimeout = null;
+            $scope.$watch('titleSearch', function() {
+                    if ($scope.titleSearchTimeout != null) {
+                        $timeout.cancel($scope.titleSearchTimeout);
+                        $scope.titleSearchTimeout = null;
+                    }
+                    $scope.titleSearchTimeout = $timeout(function () {
+                        $scope.makeRequest(constructUrl());
+                    }, 200);
+            });
+
+
+            function constructUrl() {
+                var scoreVal = $('#scoreInput').val() || 0;
+                var viewsVal = $('#viewsInput').val() || 0;
+                var answersVal = $('#answerInput').val() || 0;
+                var scoreOperator = $('#filterScoreBySelect').val() || 'GreaterThan';
+                var viewsOperator = $('#filterViewsBySelect').val() || 'GreaterThan';
+                var answersOperator = $('#filterAnswersBySelect').val() || 'GreaterThan';
+                var orderByDescVal = $('#orderByDescSelect').val() || 'scoore';
+
+                var path = '@(new StackOverflowQuery().ToGetUrl())' +
+                    '?score' + scoreOperator + '=' + scoreVal +
+                    '&view_count' + viewsOperator + '=' + viewsVal +
+                    '&answer_count' + answersOperator + '=' + answersVal +
+                    '&orderByDesc=' + orderByDescVal;
+                    if ($scope.titleSearch) {
+                        path += '&titleContains=' + $scope.titleSearch;
+                    }
+                return path;
+            }
+
+            $scope.filterResult = function () {
+                $scope.makeRequest(constructUrl());
+            };
+
+            $scope.makeRequest('/questions');
+        }
+
+    ]);
+</script>
+<div ng-app="soApp">
+    <div ng-controller="soCtrl">
+        <input type="text" name="titleSearch" ng-model="titleSearch" class="input-lg" placeholder="Title search" style="width:100%" />
+        <div class="col-sm-6 col-md-3 col-lg-3">
+            
+            <form style="margin-top:32px">
+                <div>
+                    <div class="form-group">
+                        <select id="filterScoreBySelect" class="form-control">
+                            <option value="GreaterThan">Score greater than</option>
+                            <option value="LessThan">Score less than</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input id="scoreInput" class="form-control" type="text" placeholder="Score" />
+                    </div>
+                    <div class="form-group">
+                        <select id="filterViewsBySelect" class="form-control">
+                            <option value="GreaterThan">Views greater than</option>
+                            <option value="LessThan">Views less than</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input id="viewsInput" class="form-control" type="text" placeholder="Views" />
+                    </div>
+                    <div class="form-group">
+                        <select id="filterAnswersBySelect" class="form-control">
+                            <option value="GreaterThan">Answers greater than</option>
+                            <option value="LessThan">Answers less than</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input id="answerInput" class=" form-control" type="text" placeholder="Number of answers" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Order by <select id="orderByDescSelect">
+                                         <option value="score">Score</option>
+                                         <option value="viewCount">Views</option>
+                                         <option value="answerCount">Answers</option>
+                                     </select> descending
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6 col-md-9 col-lg-9">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Score</th>
+                        <th>Answers</th>
+                        <th>Title</th>
+                        <th>Total Views</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="question in questionsResult">
+                        <td ng-bind="question.Score"></td>
+                        <td ng-bind="question.AnswerCount"></td>
+                        <td><a href="{{question.Link}}">{{question.Title}}</a></td>
+                        <td ng-bind="question.ViewCount"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
