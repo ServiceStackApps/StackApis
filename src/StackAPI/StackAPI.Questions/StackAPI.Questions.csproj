@@ -122,7 +122,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\db.sqlite" />
-    <None Include="Properties\PublishProfiles\StackAPI.Local.pubxml" />
     <None Include="scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />

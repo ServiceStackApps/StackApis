@@ -41,12 +41,12 @@
                 var orderByDescVal = $('#orderByDescSelect').val() || 'scoore';
 
                 var path = '@(new StackOverflowQuery().ToGetUrl())' +
-                    '?score' + scoreOperator + '=' + scoreVal +
-                    '&view_count' + viewsOperator + '=' + viewsVal +
-                    '&answer_count' + answersOperator + '=' + answersVal +
-                    '&orderByDesc=' + orderByDescVal;
+                    '?Score' + scoreOperator + '=' + scoreVal +
+                    '&ViewCount' + viewsOperator + '=' + viewsVal +
+                    '&AnswerCount' + answersOperator + '=' + answersVal +
+                    '&OrderByDesc=' + orderByDescVal;
                     if ($scope.titleSearch) {
-                        path += '&titleContains=' + $scope.titleSearch;
+                        path += '&TitleContains=' + $scope.titleSearch;
                     }
                 return path;
             }
