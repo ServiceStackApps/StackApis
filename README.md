@@ -1,2 +1,2 @@
-SOAutoQuery
+StackApis
 ===========
