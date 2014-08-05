@@ -14,6 +14,10 @@
                     });
             };
 
+            $('input,select').change(function() {
+                $scope.makeRequest(constructUrl());
+            });
+
             $scope.titleSearchTimeout = null;
             $scope.$watch('titleSearch', function() {
                 if ($scope.titleSearch) {
@@ -22,7 +26,7 @@
                         $scope.titleSearchTimeout = null;
                     }
                     $scope.titleSearchTimeout = $timeout(function () {
-                        $scope.makeRequest(constructUrl() + "&titleContains=" + $scope.titleSearch);
+                        $scope.makeRequest(constructUrl());
                     }, 200);
                 }
             });
@@ -42,6 +46,9 @@
                     '&view_count' + viewsOperator + '=' + viewsVal +
                     '&answer_count' + answersOperator + '=' + answersVal +
                     '&orderByDesc=' + orderByDescVal;
+                    if ($scope.titleSearch) {
+                        path += '&titleContains=' + $scope.titleSearch;
+                    }
                 return path;
             }
 
@@ -97,9 +104,6 @@
                                      </select> descending
                         </label>
                     </div>
-                </div>
-                <div class="form-group">
-                    <input id="filterBtn" class="form-control" type="button" name="filterPage" value="Filter" ng-click="filterResult()" />
                 </div>
             </form>
         </div>
