@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ServiceStack.DataAnnotations;
 
-namespace StackAPI.Questions.ServiceModel.Types
+namespace StackApis.ServiceModel.Types
 {
     public class StackOverflowUser
     {

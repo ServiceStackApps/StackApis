@@ -1,7 +1,7 @@
 ﻿using ServiceStack;
-using StackAPI.Questions.ServiceModel.Types;
+using StackApis.ServiceModel.Types;
 
-namespace StackAPI.Questions.ServiceModel
+namespace StackApis.ServiceModel
 {
     [Route("/questions")]
     public class StackOverflowQuery : QueryBase<QuestionItem>

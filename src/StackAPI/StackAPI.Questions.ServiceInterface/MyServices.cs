@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using ServiceStack;
 using ServiceStack.OrmLite;
-using StackAPI.Questions.ServiceModel;
-using StackAPI.Questions.ServiceModel.Types;
+using StackApis.ServiceModel;
+using StackApis.ServiceModel.Types;
 
-namespace StackAPI.Questions.ServiceInterface
+namespace StackApis.ServiceInterface
 {
     public class MyServices : Service
     {

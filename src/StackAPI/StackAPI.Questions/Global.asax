@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="StackAPI.Questions.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="StackApis.Global" Language="C#" %>

@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StackAPI.Questions</RootNamespace>
-    <AssemblyName>StackAPI.Questions</AssemblyName>
+    <RootNamespace>StackApis</RootNamespace>
+    <AssemblyName>StackApis</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -105,6 +105,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-mocks.js" />
     <Content Include="scripts\angular-route.js" />
@@ -127,7 +128,6 @@
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\jquery-1.9.0.js" />
     <Content Include="scripts\jquery-1.9.0.min.js" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="default.cshtml" />
     <Content Include="Views\Hello.cshtml" />
     <Content Include="scripts\angular.min.js.map" />
@@ -152,14 +152,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StackAPI.Questions.ServiceInterface\StackAPI.Questions.ServiceInterface.csproj">
+    <ProjectReference Include="..\StackAPI.Questions.ServiceInterface\StackApis.ServiceInterface.csproj">
       <Project>{582dfb0f-f84d-4e43-9bca-2a5a86600b7a}</Project>
-      <Name>StackAPI.Questions.ServiceInterface</Name>
+      <Name>StackApis.ServiceInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StackAPI.Questions.ServiceModel\StackAPI.Questions.ServiceModel.csproj">
+    <ProjectReference Include="..\StackAPI.Questions.ServiceModel\StackApis.ServiceModel.csproj">
       <Project>{08bef328-ab7d-48d3-800d-48acc75c7914}</Project>
-      <Name>StackAPI.Questions.ServiceModel</Name>
+      <Name>StackApis.ServiceModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="partials\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -3,9 +3,9 @@ using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Razor;
-using StackAPI.Questions.ServiceInterface;
+using StackApis.ServiceInterface;
 
-namespace StackAPI.Questions
+namespace StackApis
 {
     public class AppHost : AppHostBase
     {

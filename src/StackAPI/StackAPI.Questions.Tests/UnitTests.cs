@@ -12,10 +12,10 @@ using ServiceStack.OrmLite;
 using ServiceStack.Testing;
 using ServiceStack.Text;
 using ServiceStack.Web;
-using StackAPI.Questions.ServiceInterface;
-using StackAPI.Questions.ServiceModel.Types;
+using StackApis.ServiceInterface;
+using StackApis.ServiceModel.Types;
 
-namespace StackAPI.Questions.Tests
+namespace StackApis.Tests
 {
     [TestFixture]
     public class UnitTests

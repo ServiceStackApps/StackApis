@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StackAPI.Questions
+namespace StackApis
 {
     public class Global : System.Web.HttpApplication
     {

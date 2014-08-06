@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackAPI.Questions", "StackAPI\StackAPI.Questions\StackAPI.Questions.csproj", "{6F86FC59-9DE7-4BF5-8D11-CB7E99DA29FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackApis", "StackAPI\StackAPI.Questions\StackApis.csproj", "{6F86FC59-9DE7-4BF5-8D11-CB7E99DA29FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackAPI.Questions.ServiceModel", "StackAPI\StackAPI.Questions.ServiceModel\StackAPI.Questions.ServiceModel.csproj", "{08BEF328-AB7D-48D3-800D-48ACC75C7914}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackApis.ServiceModel", "StackAPI\StackAPI.Questions.ServiceModel\StackApis.ServiceModel.csproj", "{08BEF328-AB7D-48D3-800D-48ACC75C7914}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackAPI.Questions.ServiceInterface", "StackAPI\StackAPI.Questions.ServiceInterface\StackAPI.Questions.ServiceInterface.csproj", "{582DFB0F-F84D-4E43-9BCA-2A5A86600B7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackApis.ServiceInterface", "StackAPI\StackAPI.Questions.ServiceInterface\StackApis.ServiceInterface.csproj", "{582DFB0F-F84D-4E43-9BCA-2A5A86600B7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackAPI.Questions.Tests", "StackAPI\StackAPI.Questions.Tests\StackAPI.Questions.Tests.csproj", "{B1665387-EF91-4CA0-82BB-66E5781ED800}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackApis.Tests", "StackAPI\StackAPI.Questions.Tests\StackApis.Tests.csproj", "{B1665387-EF91-4CA0-82BB-66E5781ED800}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

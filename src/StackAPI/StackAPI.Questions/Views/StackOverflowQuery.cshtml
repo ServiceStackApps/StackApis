@@ -1,9 +1,5 @@
-﻿@using System.Data.SQLite
-@using System.Linq
-@using System.Reflection
-@using System.Security.Principal
-@using StackAPI.Questions.ServiceModel
-@inherits ViewPage<QueryResponse<StackAPI.Questions.ServiceModel.Types.QuestionItem>>
+﻿@using System.Linq
+@inherits ViewPage<QueryResponse<StackApis.ServiceModel.Types.QuestionItem>>
 @{
     ViewBag.Title = "ServiceStack StackOverflow questions";
 }
@@ -67,10 +63,10 @@
                     @foreach (var m in @Model.Results.Take(25))
                     {
                         <tr>
-                            <td>@m.score</td>
-                            <td>@m.answer_count</td>
-                            <td><a href="@m.link">@m.title</a></td>
-                            <td>@m.view_count</td>
+                            <td>@m.Score</td>
+                            <td>@m.AnswerCount</td>
+                            <td><a href="@m.Link">@m.Title</a></td>
+                            <td>@m.ViewCount</td>
                         </tr>
                     }
                 </tbody>

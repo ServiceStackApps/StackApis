@@ -7,8 +7,8 @@
     <ProjectGuid>{08BEF328-AB7D-48D3-800D-48ACC75C7914}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StackAPI.Questions.ServiceModel</RootNamespace>
-    <AssemblyName>StackAPI.Questions.ServiceModel</AssemblyName>
+    <RootNamespace>StackApis.ServiceModel</RootNamespace>
+    <AssemblyName>StackApis.ServiceModel</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
