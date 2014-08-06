@@ -13,6 +13,7 @@ using ServiceStack.Testing;
 using ServiceStack.Text;
 using ServiceStack.Web;
 using StackApis.ServiceInterface;
+using StackApis.ServiceModel;
 using StackApis.ServiceModel.Types;
 
 namespace StackApis.Tests

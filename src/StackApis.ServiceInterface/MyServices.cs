@@ -12,7 +12,7 @@ namespace StackApis.ServiceInterface
         {
             var query = Db.From<Question>();
 
-            if (request.Tags != null && request.Tags.Length > 0)
+            if (request.Tags != null && request.Tags.Count > 0)
             {
                 query.Join<QuestionTag>((q, t) => q.QuestionId == t.QuestionId)
                     .Where<QuestionTag>(x => Sql.In(x.Tag, request.Tags));

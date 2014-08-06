@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using ServiceStack;
+using ServiceStack.DataAnnotations;
 using StackApis.ServiceModel.Types;
 
 namespace StackApis.ServiceModel
 {
+    [Description("Get a list of Answers for a Question")]
     [Route("/getanswer/{QuestionId}")]
     public class GetAnswers : IReturn<GetAnswersResponse>
     {
