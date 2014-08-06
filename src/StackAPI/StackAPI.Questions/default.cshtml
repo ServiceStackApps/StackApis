@@ -2,10 +2,65 @@
 @inherits ViewPage
 @{
     ViewBag.Title = "ServiceStack StackOverflow questions";
-    Layout = "";
 }
+<script>
+    var app = angular.module('soApp', []);
 
-<div>
+    app.controller('soCtrl', ['$scope', '$http','$timeout',
+        function ($scope, $http, $timeout) {
+            $scope.makeRequest = function(path) {
+                $http.get(path)
+                    .success(function(response) {
+                        $scope.questionsResult = response.Results;
+                    });
+            };
+
+            $('input,select').change(function() {
+                $scope.makeRequest(constructUrl());
+            });
+
+            $scope.titleSearchTimeout = null;
+            $scope.$watch('titleSearch', function() {
+                    if ($scope.titleSearchTimeout != null) {
+                        $timeout.cancel($scope.titleSearchTimeout);
+                        $scope.titleSearchTimeout = null;
+                    }
+                    $scope.titleSearchTimeout = $timeout(function () {
+                        $scope.makeRequest(constructUrl());
+                    }, 200);
+            });
+
+
+            function constructUrl() {
+                var scoreVal = $('#scoreInput').val() || 0;
+                var viewsVal = $('#viewsInput').val() || 0;
+                var answersVal = $('#answerInput').val() || 0;
+                var scoreOperator = $('#filterScoreBySelect').val() || 'GreaterThan';
+                var viewsOperator = $('#filterViewsBySelect').val() || 'GreaterThan';
+                var answersOperator = $('#filterAnswersBySelect').val() || 'GreaterThan';
+                var orderByDescVal = $('#orderByDescSelect').val() || 'scoore';
+
+                var path = '@(new StackOverflowQuery().ToGetUrl())' +
+                    '?Score' + scoreOperator + '=' + scoreVal +
+                    '&ViewCount' + viewsOperator + '=' + viewsVal +
+                    '&AnswerCount' + answersOperator + '=' + answersVal +
+                    '&OrderByDesc=' + orderByDescVal;
+                    if ($scope.titleSearch) {
+                        path += '&TitleContains=' + $scope.titleSearch;
+                    }
+                return path;
+            }
+
+            $scope.filterResult = function () {
+                $scope.makeRequest(constructUrl());
+            };
+
+            $scope.makeRequest('/questions');
+        }
+
+    ]);
+</script>
+<div ng-app="soApp">
     <div ng-controller="soCtrl">
         <input type="text" name="titleSearch" ng-model="titleSearch" class="input-lg" placeholder="Title search" style="width:100%" />
         <div class="col-sm-6 col-md-3 col-lg-3">
