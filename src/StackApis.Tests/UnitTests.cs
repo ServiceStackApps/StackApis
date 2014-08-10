@@ -67,40 +67,47 @@ namespace StackApis.Tests
         private void SeedStackOverflowData(IDbConnectionFactory dbConnectionFactory)
         {
             var client = new JsonServiceClient();
-            int numberOfPages = 5;
+            int numberOfPages = 70;
             int pageSize = 100;
             var dbQuestions = new List<Question>();
             var dbAnswers = new List<Answer>();
-            for (int i = 1; i < numberOfPages + 1; i++)
+            try
             {
-                //Throttle queries
-                Thread.Sleep(500);
-                var questionsResponse =
-                    client.Get("https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
-                            .Fmt(i, pageSize, "stackoverflow"));
-
-                QuestionsResponse qResponse;
-                using (new ConfigScope())
+                for (int i = 1; i < numberOfPages + 1; i++)
                 {
-                    var json = questionsResponse.ReadToEnd();
-                    qResponse = json.FromJson<QuestionsResponse>();
-                    dbQuestions.AddRange(qResponse.Items.Select(q => q.ConvertTo<Question>()));
+                    //Throttle queries
+                    Thread.Sleep(500);
+                    var questionsResponse =
+                        client.Get("https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
+                                .Fmt(i, pageSize, "stackoverflow"));
+
+                    QuestionsResponse qResponse;
+                    using (new ConfigScope())
+                    {
+                        var json = questionsResponse.ReadToEnd();
+                        qResponse = json.FromJson<QuestionsResponse>();
+                        dbQuestions.AddRange(qResponse.Items.Select(q => q.ConvertTo<Question>()));
+                    }
+
+                    var acceptedAnswers =
+                        qResponse.Items
+                        .Where(x => x.AcceptedAnswerId != null)
+                        .Select(x => x.AcceptedAnswerId).ToList();
+
+                    var answersResponse = client.Get("https://api.stackexchange.com/2.2/answers/{0}?sort=activity&site=stackoverflow"
+                        .Fmt(acceptedAnswers.Join(";")));
+
+                    using (new ConfigScope())
+                    {
+                        var json = answersResponse.ReadToEnd();
+                        var aResponse = JsonSerializer.DeserializeFromString<AnswersResponse>(json);
+                        dbAnswers.AddRange(aResponse.Items.Select(a => a.ConvertTo<Answer>()));
+                    }
                 }
-
-                var acceptedAnswers =
-                    qResponse.Items
-                    .Where(x => x.AcceptedAnswerId != null)
-                    .Select(x => x.AcceptedAnswerId).ToList();
-
-                var answersResponse = client.Get("https://api.stackexchange.com/2.2/answers/{0}?sort=activity&site=stackoverflow"
-                    .Fmt(acceptedAnswers.Join(";")));
-
-                using (new ConfigScope())
-                {
-                    var json = answersResponse.ReadToEnd();
-                    var aResponse = JsonSerializer.DeserializeFromString<AnswersResponse>(json);
-                    dbAnswers.AddRange(aResponse.Items.Select(a => a.ConvertTo<Answer>()));
-                }
+            }
+            catch (Exception ex)
+            {
+                //ignore
             }
 
             //Filter duplicates
