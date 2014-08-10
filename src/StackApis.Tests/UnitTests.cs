@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using NUnit.Framework;
 using ServiceStack;
@@ -11,7 +8,6 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Testing;
 using ServiceStack.Text;
-using ServiceStack.Web;
 using StackApis.ServiceInterface;
 using StackApis.ServiceModel;
 using StackApis.ServiceModel.Types;
