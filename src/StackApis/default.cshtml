@@ -5,14 +5,12 @@
 }
 <script>
     var app = angular.module('soApp', []);
-
     app.controller('soCtrl', ['$scope', '$http', '$timeout',
         function ($scope, $http, $timeout) {
             $scope.makeRequest = function (path) {
-                $http.get(path)
-                    .success(function (response) {
-                        $scope.questionsResult = response.Results;
-                    });
+                $http.get(path).success(function (response) {
+                    $scope.questionsResult = response.Results;
+                });
             };
 
             $('input,select').change(function () {
@@ -30,30 +28,9 @@
             }
 
             $scope.titleSearchTimeout = null;
-            $scope.$watch('titleSearch', function () {
-                processInputChange();
-            });
-
-            $scope.$watch('scoreSelect', function () {
-                processInputChange();
-            });
-            $scope.$watch('scoreVal', function () {
-                processInputChange();
-            });
-            $scope.$watch('viewsSelect', function () {
-                processInputChange();
-            });
-            $scope.$watch('viewsVal', function () {
-                processInputChange();
-            });
-            $scope.$watch('answersSelect', function () {
-                processInputChange();
-            });
-            $scope.$watch('answersVal', function () {
-                processInputChange();
-            });
-            $scope.$watch('orderBySelect', function () {
-                processInputChange();
+            var watch = ['titleSearch', 'scoreSelect', 'scoreVal', 'viewsSelect', 'viewsVal', 'answersSelect', 'answersVal', 'orderBySelect'];
+            angular.forEach(watch, function (input) {
+                $scope.$watch(input, processInputChange);
             });
 
             function constructUrl(model) {
@@ -76,10 +53,8 @@
             $scope.viewsSelect = 'GreaterThan';
             $scope.answersSelect = 'GreaterThan';
             $scope.orderBySelect = 'Score';
-
             $scope.makeRequest('/questions');
         }
-
     ]);
 </script>
 <div ng-app="soApp">
