@@ -6,7 +6,7 @@ using StackApis.ServiceModel.Types;
 namespace StackApis.ServiceModel
 {
     [Description("Get a list of Answers for a Question")]
-    [Route("/getanswer/{QuestionId}")]
+    [Route("/answers/{QuestionId}")]
     public class GetAnswers : IReturn<GetAnswersResponse>
     {
         public int QuestionId { get; set; }
