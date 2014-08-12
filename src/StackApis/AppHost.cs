@@ -1,5 +1,6 @@
 ﻿using Funq;
 using ServiceStack;
+using ServiceStack.Api.Swagger;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Razor;
@@ -24,8 +25,9 @@ namespace StackApis
         public override void Configure(Container container)
         {
             //Config examples
-            //this.Plugins.Add(new PostmanFeature());
-            //this.Plugins.Add(new CorsFeature());
+            this.Plugins.Add(new SwaggerFeature { UseBootstrapTheme = true });
+            this.Plugins.Add(new PostmanFeature());
+            this.Plugins.Add(new CorsFeature());
 
             Plugins.Add(new RazorFormat());
             Plugins.Add(new AutoQueryFeature { MaxLimit = 100});
