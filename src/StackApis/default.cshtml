@@ -5,57 +5,53 @@
 }
 <script>
     var app = angular.module('soApp', []);
-    app.controller('soCtrl', ['$scope', '$http', '$timeout',
-        function ($scope, $http, $timeout) {
-            $scope.makeRequest = function (path) {
-                $http.get(path).success(function (response) {
-                    $scope.questionsResult = response.Results;
-                });
-            };
-
-            $('input,select').change(function () {
-                $scope.makeRequest(constructUrl());
+    app.controller('soCtrl', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+        $scope.makeRequest = function (path) {
+            $http.get(path).success(function (response) {
+                $scope.questionsResult = response.Results;
             });
+        };
 
-            function processInputChange() {
-                if ($scope.titleSearchTimeout != null) {
-                    $timeout.cancel($scope.titleSearchTimeout);
-                    $scope.titleSearchTimeout = null;
-                }
-                $scope.titleSearchTimeout = $timeout(function () {
-                    $scope.makeRequest(constructUrl());
-                }, 200);
+        $('input,select').change(function () {
+            $scope.makeRequest(constructUrl());
+        });
+
+        function processInputChange() {
+            if ($scope.titleSearchTimeout != null) {
+                $timeout.cancel($scope.titleSearchTimeout);
+                $scope.titleSearchTimeout = null;
             }
-
-            $scope.titleSearchTimeout = null;
-            var watch = ['titleSearch', 'scoreSelect', 'scoreVal', 'viewsSelect', 'viewsVal', 'answersSelect', 'answersVal', 'orderBySelect'];
-            angular.forEach(watch, function (input) {
-                $scope.$watch(input, processInputChange);
-            });
-
-            function constructUrl(model) {
-                var path = '@(new StackOverflowQuery().ToGetUrl())' +
-                    '?Score' + ($scope.scoreSelect || 'GreaterThan') + '=' + ($scope.scoreVal || 0) +
-                    '&ViewCount' + ($scope.viewsSelect || 'GreaterThan') + '=' + ($scope.viewsVal || 0) +
-                    '&AnswerCount' + ($scope.answersSelect || 'GreaterThan') + '=' + ($scope.answersVal || 0) +
-                    '&OrderByDesc=' + ($scope.orderBySelect || 'Score');
-                if ($scope.titleSearch) {
-                    path += '&TitleContains=' + $scope.titleSearch;
-                }
-                return path;
-            }
-
-            $scope.filterResult = function () {
+            $scope.titleSearchTimeout = $timeout(function () {
                 $scope.makeRequest(constructUrl());
-            };
-
-            $scope.scoreSelect = 'GreaterThan';
-            $scope.viewsSelect = 'GreaterThan';
-            $scope.answersSelect = 'GreaterThan';
-            $scope.orderBySelect = 'Score';
-            $scope.makeRequest('/questions');
+            }, 200);
         }
-    ]);
+
+        $scope.titleSearchTimeout = null;
+        var watch = ['titleSearch', 'scoreSelect', 'scoreVal', 'viewsSelect', 'viewsVal', 'answersSelect', 'answersVal', 'orderBySelect'];
+        angular.forEach(watch, function (input) {
+            $scope.$watch(input, processInputChange);
+        });
+
+        function constructUrl(model) {
+            var path = '@(new StackOverflowQuery().ToGetUrl())' +
+                '?Score' + ($scope.scoreSelect || 'GreaterThan') + '=' + ($scope.scoreVal || 0) +
+                '&ViewCount' + ($scope.viewsSelect || 'GreaterThan') + '=' + ($scope.viewsVal || 0) +
+                '&AnswerCount' + ($scope.answersSelect || 'GreaterThan') + '=' + ($scope.answersVal || 0) +
+                '&OrderByDesc=' + ($scope.orderBySelect || 'Score') +
+                ($scope.titleSearch ? '&TitleContains=' + $scope.titleSearch : '');
+            return path;
+        }
+
+        $scope.filterResult = function () {
+            $scope.makeRequest(constructUrl());
+        };
+
+        $scope.scoreSelect = 'GreaterThan';
+        $scope.viewsSelect = 'GreaterThan';
+        $scope.answersSelect = 'GreaterThan';
+        $scope.orderBySelect = 'Score';
+        $scope.makeRequest('/questions');
+    }]);
 </script>
 <div ng-app="soApp">
     <div ng-controller="soCtrl">
