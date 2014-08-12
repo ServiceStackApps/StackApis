@@ -4,7 +4,7 @@ using ServiceStack;
 namespace StackApis.ServiceModel
 {
     [Restrict(InternalOnly = true)]
-    [Route("/admin/stats")]
+    [Route("/admin/stats", "GET")]
     public class GetStats {}
 
     public class GetStatsResponse
