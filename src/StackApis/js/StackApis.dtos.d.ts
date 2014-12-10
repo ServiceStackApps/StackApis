@@ -1,9 +1,10 @@
 /* Options:
-Date: 2014-12-10 05:01:08
+Date: 2014-12-10 00:26:05
 Version: 1
-BaseUrl: http://stackapis.servicestack.net
+BaseUrl: http://localhost:32494
 
 GlobalNamespace: dtos
+//MakePropertiesOptional: True
 //AddServiceStackTypes: True
 //AddResponseStatus: False
 //AddImplicitVersion: 
@@ -22,41 +23,41 @@ declare module dtos
 
     interface Question
     {
-        QuestionId:number;
-        Tags:string[];
-        Owner:User;
-        IsAnswered:boolean;
-        ViewCount:number;
-        AnswerCount:number;
-        Score:number;
-        LastActivityDate:number;
-        CreationDate:number;
-        LastEditDate:number;
-        Link:string;
-        Title:string;
+        QuestionId?:number;
+        Tags?:string[];
+        Owner?:User;
+        IsAnswered?:boolean;
+        ViewCount?:number;
+        AnswerCount?:number;
+        Score?:number;
+        LastActivityDate?:number;
+        CreationDate?:number;
+        LastEditDate?:number;
+        Link?:string;
+        Title?:string;
         AcceptedAnswerId?:number;
     }
 
     interface Answer
     {
-        AnswerId:number;
-        Owner:User;
-        IsAccepted:boolean;
-        Score:number;
-        LastActivityDate:number;
-        LastEditDate:number;
-        CreationDate:number;
-        QuestionId:number;
+        AnswerId?:number;
+        Owner?:User;
+        IsAccepted?:boolean;
+        Score?:number;
+        LastActivityDate?:number;
+        LastEditDate?:number;
+        CreationDate?:number;
+        QuestionId?:number;
     }
 
     // @DataContract
     interface RestService
     {
         // @DataMember(Name="path")
-        Path:string;
+        Path?:string;
 
         // @DataMember(Name="description")
-        Description:string;
+        Description?:string;
     }
 
     interface QueryBase_1<T> extends QueryBase
@@ -67,27 +68,27 @@ declare module dtos
     interface ResponseStatus
     {
         // @DataMember(Order=1)
-        ErrorCode:string;
+        ErrorCode?:string;
 
         // @DataMember(Order=2)
-        Message:string;
+        Message?:string;
 
         // @DataMember(Order=3)
-        StackTrace:string;
+        StackTrace?:string;
 
         // @DataMember(Order=4)
-        Errors:ResponseError[];
+        Errors?:ResponseError[];
     }
 
     interface User
     {
-        Reputation:number;
-        Userid:number;
-        UserType:string;
-        AcceptRate:number;
-        ProfileImage:string;
-        DisplayName:string;
-        Link:string;
+        Reputation?:number;
+        Userid?:number;
+        UserType?:string;
+        AcceptRate?:number;
+        ProfileImage?:string;
+        DisplayName?:string;
+        Link?:string;
     }
 
     interface QueryBase
@@ -99,75 +100,85 @@ declare module dtos
         Take?:number;
 
         // @DataMember(Order=3)
-        OrderBy:string;
+        OrderBy?:string;
 
         // @DataMember(Order=4)
-        OrderByDesc:string;
+        OrderByDesc?:string;
     }
 
     // @DataContract
     interface ResponseError
     {
         // @DataMember(Order=1, EmitDefaultValue=false)
-        ErrorCode:string;
+        ErrorCode?:string;
 
         // @DataMember(Order=2, EmitDefaultValue=false)
-        FieldName:string;
+        FieldName?:string;
 
         // @DataMember(Order=3, EmitDefaultValue=false)
-        Message:string;
+        Message?:string;
     }
 
     interface SearchQuestionsResponse
     {
-        Results:Question[];
+        Results?:Question[];
     }
 
     interface GetAnswersResponse
     {
-        Ansnwer:Answer;
+        Ansnwer?:Answer;
+    }
+
+    interface GetStatsResponse
+    {
+        QuestionsCount?:number;
+        AnswersCount?:number;
+        TagCounts?:{ [index:string]: number; };
+        TopQuestionScore?:number;
+        TopQuestionViews?:number;
+        TopAnswerScore?:number;
     }
 
     // @DataContract
     interface ResourcesResponse
     {
         // @DataMember(Name="swaggerVersion")
-        SwaggerVersion:string;
+        SwaggerVersion?:string;
 
         // @DataMember(Name="apiVersion")
-        ApiVersion:string;
+        ApiVersion?:string;
 
         // @DataMember(Name="basePath")
-        BasePath:string;
+        BasePath?:string;
 
         // @DataMember(Name="apis")
-        Apis:RestService[];
+        Apis?:RestService[];
     }
 
     // @DataContract
     interface QueryResponse<Question>
     {
         // @DataMember(Order=1)
-        Offset:number;
+        Offset?:number;
 
         // @DataMember(Order=2)
-        Total:number;
+        Total?:number;
 
         // @DataMember(Order=3)
-        Results:Question[];
+        Results?:Question[];
 
         // @DataMember(Order=4)
-        Meta:{ [index:string]: string; };
+        Meta?:{ [index:string]: string; };
 
         // @DataMember(Order=5)
-        ResponseStatus:ResponseStatus;
+        ResponseStatus?:ResponseStatus;
     }
 
     // @Route("/questions/search")
     interface SearchQuestions extends IReturn<SearchQuestionsResponse>
     {
-        Tags:string[];
-        UserId:string;
+        Tags?:string[];
+        UserId?:string;
     }
 
     /**
@@ -176,7 +187,12 @@ declare module dtos
     // @Route("/answers/{QuestionId}")
     interface GetAnswers extends IReturn<GetAnswersResponse>
     {
-        QuestionId:number;
+        QuestionId?:number;
+    }
+
+    // @Route("/admin/stats", "GET")
+    interface GetStats extends IReturn<GetStats>
+    {
     }
 
     // @Route("/resources")
@@ -184,7 +200,7 @@ declare module dtos
     interface Resources extends IReturn<Resources>
     {
         // @DataMember(Name="apiKey")
-        ApiKey:string;
+        ApiKey?:string;
     }
 
     // @Route("/resource/{Name*}")
@@ -192,20 +208,20 @@ declare module dtos
     interface ResourceRequest
     {
         // @DataMember(Name="apiKey")
-        ApiKey:string;
+        ApiKey?:string;
 
         // @DataMember(Name="name")
-        Name:string;
+        Name?:string;
     }
 
     // @Route("/postman")
     interface Postman
     {
-        Label:string[];
-        ExportSession:boolean;
-        ssid:string;
-        sspid:string;
-        ssopt:string;
+        Label?:string[];
+        ExportSession?:boolean;
+        ssid?:string;
+        sspid?:string;
+        ssopt?:string;
     }
 
     // @Route("/questions")
