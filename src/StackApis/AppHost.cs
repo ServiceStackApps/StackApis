@@ -37,7 +37,7 @@ namespace StackApis
                 {
                     ServiceDescription = "Search for ServiceStack Questions on StackOverflow",
                     ServiceIconUrl = "/Content/app/logo-76.png",
-                    BackgroundColor = "#F0CC9D",
+                    BackgroundColor = "#fc9a24",
                     TextColor = "#fff",
                     LinkColor = "#ffff8d",
                     BrandImageUrl = "/Content/app/brand.png",

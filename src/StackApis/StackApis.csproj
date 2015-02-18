@@ -110,6 +110,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\app\bg.png" />
+    <Content Include="Content\app\brand.png" />
+    <Content Include="Content\app\logo-76.png" />
+    <Content Include="Content\app\stacks-75.png" />
+    <Content Include="Content\app\stacks-white-75.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
