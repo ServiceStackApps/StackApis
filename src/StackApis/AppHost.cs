@@ -30,7 +30,22 @@ namespace StackApis
             this.Plugins.Add(new CorsFeature());
 
             Plugins.Add(new RazorFormat());
-            Plugins.Add(new AutoQueryFeature { MaxLimit = 100});
+            Plugins.Add(new AutoQueryFeature
+            {
+                MaxLimit = 100,
+                AutoQueryViewerConfig =
+                {
+                    ServiceDescription = "Search for ServiceStack Questions on StackOverflow",
+                    ServiceIconUrl = "/Content/app/logo-76.png",
+                    BackgroundColor = "#F0CC9D",
+                    TextColor = "#fff",
+                    LinkColor = "#ffff8d",
+                    BrandImageUrl = "/Content/app/brand.png",
+                    BrandUrl = "http://stackapis.servicestack.net/",
+                    BackgroundImageUrl = "/Content/app/bg.png",
+                    IsPublic = true,
+                }
+            });
 
             container.Register<IDbConnectionFactory>(
                 new OrmLiteConnectionFactory("~/App_Data/db.sqlite".MapServerPath(), SqliteDialect.Provider));
