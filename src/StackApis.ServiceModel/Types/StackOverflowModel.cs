@@ -19,17 +19,17 @@ namespace StackApis.ServiceModel.Types
         [Alias("Id")]
         public int QuestionId { get; set; }
 
+        public string Title { get; set; }
+        public int Score { get; set; }
+        public int ViewCount { get; set; }
+        public bool IsAnswered { get; set; }
+        public int AnswerCount { get; set; }
+        public string Link { get; set; }
         public string[] Tags { get; set; }
         public User Owner { get; set; }
-        public bool IsAnswered { get; set; }
-        public int ViewCount { get; set; }
-        public int AnswerCount { get; set; }
-        public int Score { get; set; }
         public int LastActivityDate { get; set; }
         public int CreationDate { get; set; }
         public int LastEditDate { get; set; }
-        public string Link { get; set; }
-        public string Title { get; set; }
         public int? AcceptedAnswerId { get; set; }
     }
 
