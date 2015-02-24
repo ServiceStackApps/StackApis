@@ -67,7 +67,7 @@ namespace StackApis.Tests
         private void SeedStackOverflowData(IDbConnectionFactory dbConnectionFactory)
         {
             var client = new JsonServiceClient();
-            int numberOfPages = 70;
+            int numberOfPages = 80;
             int pageSize = 100;
             var dbQuestions = new List<Question>();
             var dbAnswers = new List<Answer>();
@@ -76,7 +76,7 @@ namespace StackApis.Tests
                 for (int i = 1; i < numberOfPages + 1; i++)
                 {
                     //Throttle queries
-                    Thread.Sleep(500);
+                    Thread.Sleep(100);
                     var questionsResponse =
                         client.Get("https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
                                 .Fmt(i, pageSize, "stackoverflow"));
