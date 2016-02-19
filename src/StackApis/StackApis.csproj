@@ -49,6 +49,10 @@
       <HintPath>..\packages\ServiceStack.4.0.53\lib\net40\ServiceStack.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ServiceStack.Admin, Version=4.0.53.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Admin.4.0.53\lib\net45\ServiceStack.Admin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ServiceStack.Api.Swagger, Version=4.0.53.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Api.Swagger.4.0.53\lib\net40\ServiceStack.Api.Swagger.dll</HintPath>
       <Private>True</Private>

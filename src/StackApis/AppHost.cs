@@ -1,5 +1,6 @@
 ﻿using Funq;
 using ServiceStack;
+using ServiceStack.Admin;
 using ServiceStack.Api.Swagger;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -46,6 +47,7 @@ namespace StackApis
                     IsPublic = true,
                 }
             });
+            Plugins.Add(new AdminFeature());
 
             container.Register<IDbConnectionFactory>(
                 new OrmLiteConnectionFactory("~/App_Data/db.sqlite".MapServerPath(), SqliteDialect.Provider));
