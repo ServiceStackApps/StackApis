@@ -6,67 +6,29 @@ using NUnit.Framework;
 using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using ServiceStack.Testing;
 using ServiceStack.Text;
-using StackApis.ServiceInterface;
 using StackApis.ServiceModel;
 using StackApis.ServiceModel.Types;
 
 namespace StackApis.Tests
 {
     [TestFixture]
-    public class UnitTests
+    public class StackOverflowTasks
     {
-        private readonly ServiceStackHost appHost;
+        private IDbConnectionFactory dbFactory;
 
-        public UnitTests()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
-            appHost = new BasicAppHost(typeof(MyServices).Assembly)
-            {
-                ConfigureContainer = container =>
-                {
-                    //Add your IoC dependencies here
-                    container.Register<IDbConnectionFactory>(
-                        new OrmLiteConnectionFactory(
-                            "~/../../../StackApis/App_Data/db.sqlite".MapServerPath(),
-                            SqliteDialect.Provider));
-
-                    using (var db = container.Resolve<IDbConnectionFactory>().OpenDbConnection())
-                    {
-                        db.DropAndCreateTable<Question>();
-                        db.DropAndCreateTable<Answer>();
-                        db.DropAndCreateTable<QuestionTag>();
-                    }
-
-                    SeedStackOverflowData(container.Resolve<IDbConnectionFactory>());
-                }
-            }
-            .Init();
-        }
-
-        [TestFixtureTearDown]
-        public void TestFixtureTearDown()
-        {
-            appHost.Dispose();
+            dbFactory = new OrmLiteConnectionFactory(
+                "~/../../../StackApis/App_Data/db.sqlite".MapServerPath(), SqliteDialect.Provider);
         }
 
         [Test]
-        public void TestImport()
-        {
-            var dbConnectionFactory = appHost.TryResolve<IDbConnectionFactory>();
-            using (var db = dbConnectionFactory.OpenDbConnection())
-            {
-                var numberOfQuestions = db.Count<Question>();
-                var numberOfAnswers = db.Count<Answer>();
-                Assert.That(numberOfQuestions > 0);
-                Assert.That(numberOfAnswers > 0);
-            }
-        }
-
-        private void SeedStackOverflowData(IDbConnectionFactory dbConnectionFactory)
+        public void Import_from_StackOverflow()
         {
             var client = new JsonServiceClient();
-            int numberOfPages = 80;
+            int numberOfPages = 10;
             int pageSize = 100;
             var dbQuestions = new List<Question>();
             var dbAnswers = new List<Answer>();
@@ -76,9 +38,8 @@ namespace StackApis.Tests
                 {
                     //Throttle queries
                     Thread.Sleep(100);
-                    var questionsResponse =
-                        client.Get("https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
-                                .Fmt(i, pageSize, "stackoverflow"));
+                    var questionsResponse = client.Get("https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
+                        .Fmt(i, pageSize, "stackoverflow"));
 
                     QuestionsResponse qResponse;
                     using (new ConfigScope())
@@ -107,6 +68,7 @@ namespace StackApis.Tests
             catch (Exception ex)
             {
                 //ignore
+                ex.Message.Print();
             }
 
             //Filter duplicates
@@ -115,11 +77,27 @@ namespace StackApis.Tests
             var questionTags = dbQuestions.SelectMany(q =>
                 q.Tags.Select(t => new QuestionTag { QuestionId = q.QuestionId, Tag = t }));
 
-            using (var db = dbConnectionFactory.OpenDbConnection())
+            using (var db = dbFactory.OpenDbConnection())
             {
+                db.DropAndCreateTable<Question>();
+                db.DropAndCreateTable<Answer>();
+                db.DropAndCreateTable<QuestionTag>();
+
                 db.InsertAll(dbQuestions);
                 db.InsertAll(dbAnswers);
                 db.InsertAll(questionTags);
+            }
+        }
+
+        [Test]
+        public void Test_Import()
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                var numberOfQuestions = db.Count<Question>();
+                var numberOfAnswers = db.Count<Answer>();
+                Assert.That(numberOfQuestions > 0);
+                Assert.That(numberOfAnswers > 0);
             }
         }
     }
@@ -127,14 +105,15 @@ namespace StackApis.Tests
     public class ConfigScope : IDisposable
     {
         private readonly WriteComplexTypeDelegate holdQsStrategy;
-        private readonly JsConfigScope jsConfigScope;
+        private readonly JsConfigScope scope;
 
         public ConfigScope()
         {
-            jsConfigScope = JsConfig.With(dateHandler: DateHandler.UnixTime,
-                                          propertyConvention: PropertyConvention.Lenient,
-                                          emitLowercaseUnderscoreNames: true,
-                                          emitCamelCaseNames: false);
+            scope = JsConfig.With(
+                dateHandler: DateHandler.UnixTime,
+                propertyConvention: PropertyConvention.Lenient,
+                emitLowercaseUnderscoreNames: true,
+                emitCamelCaseNames: false);
 
             holdQsStrategy = QueryStringSerializer.ComplexTypeStrategy;
             QueryStringSerializer.ComplexTypeStrategy = QueryStringStrategy.FormUrlEncoded;
@@ -143,7 +122,8 @@ namespace StackApis.Tests
         public void Dispose()
         {
             QueryStringSerializer.ComplexTypeStrategy = holdQsStrategy;
-            jsConfigScope.Dispose();
+            scope.Dispose();
         }
     }
+
 }
