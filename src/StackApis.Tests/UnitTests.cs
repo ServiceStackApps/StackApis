@@ -50,7 +50,6 @@ namespace StackApis.Tests
             appHost.Dispose();
         }
 
-
         [Test]
         public void TestImport()
         {
