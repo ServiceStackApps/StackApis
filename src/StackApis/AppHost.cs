@@ -31,7 +31,8 @@ namespace StackApis
             this.Plugins.Add(new CorsFeature());
 
             Plugins.Add(new RazorFormat());
-            Plugins.Add(new AutoQueryFeature
+
+            Plugins.Add(new AutoQueryMetadataFeature
             {
                 MaxLimit = 100,
                 AutoQueryViewerConfig =
@@ -47,6 +48,7 @@ namespace StackApis
                     IsPublic = true,
                 }
             });
+            Plugins.Add(new AutoQueryFeature { MaxLimit = 100 });
             Plugins.Add(new AdminFeature());
 
             container.Register<IDbConnectionFactory>(
