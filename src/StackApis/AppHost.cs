@@ -1,7 +1,7 @@
 ﻿using Funq;
 using ServiceStack;
 using ServiceStack.Admin;
-using ServiceStack.Api.Swagger;
+using ServiceStack.Api.OpenApi;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Razor;
@@ -26,7 +26,7 @@ namespace StackApis
         public override void Configure(Container container)
         {
             //Config examples
-            this.Plugins.Add(new SwaggerFeature { UseBootstrapTheme = true });
+            this.Plugins.Add(new OpenApiFeature());
             this.Plugins.Add(new PostmanFeature());
             this.Plugins.Add(new CorsFeature());
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using NUnit.Framework;
 using ServiceStack;
@@ -38,8 +39,8 @@ namespace StackApis.Tests
                 {
                     //Throttle queries
                     Thread.Sleep(100);
-                    var questionsResponse = client.Get("https://api.stackexchange.com/2.2/questions?page={0}&pagesize={1}&site={2}&tagged=servicestack"
-                        .Fmt(i, pageSize, "stackoverflow"));
+                    var url = $"https://api.stackexchange.com/2.2/questions?page={i}&pagesize={pageSize}&site=stackoverflow&tagged=servicestack";
+                    var questionsResponse = client.Get<HttpWebResponse>(url);
 
                     QuestionsResponse qResponse;
                     using (new ConfigScope())
@@ -54,8 +55,8 @@ namespace StackApis.Tests
                         .Where(x => x.AcceptedAnswerId != null)
                         .Select(x => x.AcceptedAnswerId).ToList();
 
-                    var answersResponse = client.Get("https://api.stackexchange.com/2.2/answers/{0}?sort=activity&site=stackoverflow"
-                        .Fmt(acceptedAnswers.Join(";")));
+                    url = $"https://api.stackexchange.com/2.2/answers/{acceptedAnswers.Join(";")}?sort=activity&site=stackoverflow";
+                    var answersResponse = client.Get<HttpWebResponse>(url);
 
                     using (new ConfigScope())
                     {
@@ -92,13 +93,11 @@ namespace StackApis.Tests
         [Test]
         public void Test_Import()
         {
-            using (var db = dbFactory.OpenDbConnection())
-            {
-                var numberOfQuestions = db.Count<Question>();
-                var numberOfAnswers = db.Count<Answer>();
-                Assert.That(numberOfQuestions > 0);
-                Assert.That(numberOfAnswers > 0);
-            }
+            using var db = dbFactory.OpenDbConnection();
+            var numberOfQuestions = db.Count<Question>();
+            var numberOfAnswers = db.Count<Answer>();
+            Assert.That(numberOfQuestions > 0);
+            Assert.That(numberOfAnswers > 0);
         }
     }
 
@@ -109,11 +108,11 @@ namespace StackApis.Tests
 
         public ConfigScope()
         {
-            scope = JsConfig.With(
-                dateHandler: DateHandler.UnixTime,
-                propertyConvention: PropertyConvention.Lenient,
-                emitLowercaseUnderscoreNames: true,
-                emitCamelCaseNames: false);
+            scope = JsConfig.With(new Config {
+                DateHandler = DateHandler.UnixTime,
+                PropertyConvention= PropertyConvention.Lenient,
+                TextCase = TextCase.SnakeCase,
+            });
 
             holdQsStrategy = QueryStringSerializer.ComplexTypeStrategy;
             QueryStringSerializer.ComplexTypeStrategy = QueryStringStrategy.FormUrlEncoded;
