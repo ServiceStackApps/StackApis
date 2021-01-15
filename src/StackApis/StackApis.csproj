@@ -115,7 +115,7 @@
   <ItemGroup>
     <PackageReference Include="AngularJS.Core" Version="1.4.7" />
     <PackageReference Include="AngularJS.Route" Version="1.4.7" />
-    <PackageReference Include="bootstrap" Version="3.3.5" />
+    <PackageReference Include="bootstrap" Version="3.4.1" />
     <PackageReference Include="jQuery" Version="2.1.4" />
     <PackageReference Include="Microsoft.AspNet.Razor" Version="3.2.3" />
     <PackageReference Include="ServiceStack" Version="5.*" />
